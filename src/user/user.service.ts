@@ -2,6 +2,7 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from './entities/user.entity';
 import { Repository } from 'typeorm';
+import { RegisterDto } from 'src/auth/dto/register.dto';
 
 @Injectable()
 export class UserService {
@@ -19,5 +20,11 @@ export class UserService {
     if (!user) throw new NotFoundException("User doesn't exist");
 
     return user;
+  }
+
+  async createUser(data: RegisterDto) {
+    const user = this.userRepo.create(data);
+
+    return await this.userRepo.save(user);
   }
 }
